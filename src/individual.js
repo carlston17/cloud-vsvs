@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { render }   from 'react-dom';
+import {Link, withRouter} from 'react-router';
 
 class Individual extends Component {
 
@@ -196,7 +197,7 @@ class Individual extends Component {
                                         </td>
                                         <td>
                                             <select  id="passengers" name="passengers">
-                                                <option value selected=selected> N/A </option>
+                                                <option value selected> N/A </option>
                                                 <option value = "1"> 1 </option>
                                                 <option value = "2"> 2 </option>
                                                 <option value = "3"> 3 </option>
