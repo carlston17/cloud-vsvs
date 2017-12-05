@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { render }   from 'react-dom';
 import {Link, withRouter} from 'react-router';
 
 class Individual extends Component {
@@ -10,19 +9,20 @@ class Individual extends Component {
     }
 
     render () {
-        return <div className="container" style="text-align: center">
+
+        return <div className="container" >
             <div className="row">
                 <div className="col-xs-2"/>
-                <div className="col-xs-8">
+                <div className="col-xs-8 text-center" >
                     <h1>VSVS Individual Applications</h1>
                     <p>
-                        <strong>What do VSVS members do?</strong> Each member joins a team of 3-4 volunteers.  Each team will teach four constructor
-                        <strong>different</strong> lessons in the
-                        <strong>same</strong> classroom.  The classrooms are off-campus and the lessons last 50 - 60 minutes.
+                        <strong>What do VSVS members do? </strong> Each member joins a team of 3-4 volunteers.  Each team will teach four constructor
+                        <strong> different</strong> lessons in the
+                        <strong> same</strong> classroom.  The classrooms are off-campus and the lessons last 50 - 60 minutes.
                         Allow 25 minutes for travel each way.  For more information please attend
-                        <strong>one</strong> of the following informational meetings.
+                        <strong> one</strong> of the following informational meetings.
                     </p>
-                    <br/>  <p/>  <br/>
+                    <br/>
                     <p>
                         <strong> You will need at least a 2.5 hour block of free time. </strong>  Lessons
                         <strong> start </strong> at various times from 8:00 a.m. to 2.45 p.m. Monday - Friday
@@ -31,17 +31,16 @@ class Individual extends Component {
                         <u> Slots after 3pm and on Fridays are generally scarce.</u>
                     </p>
                     <br/>
-                    <p>
+                    <p className = "col-xs-2"/>
+                    <p className = "col-xs-8">
                         <strong>Important Note: </strong> Everyone must complete the Protection of Minors
-                        module (you still must complete the renewal module even if you have already
-                        completed it in the previous years) in order to participate in VSVS. Search for
-                        the module here:
+                        module (even if you have already completed it in the previous years) in order
+                        to participate in VSVS. Search for the module here: <strong> <a href="https://learningexchange.ea.vanderbilt.edu"> Link </a> </strong>
+
                         <br/>
-                        <a href="https://learningexchange.ea.vanderbilt.edu"> Link </a>
                         <br/>
                         <strong> Submit the certificate PDF to this Google form:
-                            <br/>
-                            <a href="https://goo.gl/forms/rEfRh2rwyIJigHot2"> Link </a>
+                             <a href="https://goo.gl/forms/rEfRh2rwyIJigHot2"> Link </a>
                         </strong>
                     </p>
 
@@ -50,7 +49,7 @@ class Individual extends Component {
                     <div className="row">
                         <div className="col-xs-3"/>
                         <div className="col-xs-6">
-                            <h2>General Information</h2>
+                            <h2 className = "text-center">General Information</h2>
                             <table className="table table-bordered table-striped">
                                 <tbody>
                                 <tr>
@@ -72,7 +71,7 @@ class Individual extends Component {
                                 <tr>
                                     <td>School</td>
                                     <td><select id="school" name="school">
-                                        <option value selected="selected"> School</option>
+                                        <option defaultValue> School</option>
                                         <option value="A&S"> A&S</option>
                                         <option value="Blair"> Blair</option>
                                         <option value="Engineering"> Engineering</option>
@@ -83,7 +82,7 @@ class Individual extends Component {
                                 <tr>
                                     <td>Year</td>
                                     <td><select id="year" name="year">
-                                        <option value selected="selected"> Year</option>
+                                        <option defaultValue> Year (Class of)</option>
                                         <option value="Freshman"> Freshman ('22)</option>
                                         <option value="Sophmore"> Sophmore ('21)</option>
                                         <option value="Junior"> Junior ('20)</option>
@@ -95,7 +94,7 @@ class Individual extends Component {
                                     <td><input type="text" id="major" name="major"/></td>
                                 </tr>
                                 <tr>
-                                    <td>Preferences</td>
+                                    <td> Preferences</td>
                                     <td><textarea type="text" id="preferences" name="preferences"
                                                   placeholder="Day of week, teacher, school, etc."/></td>
                                 </tr>
@@ -105,10 +104,15 @@ class Individual extends Component {
                                         <br/> Group not guaranteed)
                                     </td>
                                     <td>
-                                        <label htmlFor="no">No</label>
-                                        <input type="radio" name="robotics" id="no" value="no" checked = "true"/><br/>
-                                        <label htmlFor="Yes">Yes</label>
-                                        <input type="radio" name="robotics" id="yes" value= "yes" />
+                                        <label className = "radio-inline">
+                                            <input type= "radio" name="robotics" value = "0" defaultChecked = "true"/>
+                                            No
+                                        </label>
+
+                                        <label className = "radio-inline">
+                                            <input type= "radio" name="robotics" value = "1"/>
+                                            Yes
+                                        </label>
                                     </td>
                                 </tr>
 
@@ -119,44 +123,72 @@ class Individual extends Component {
                     <div className="row">
                         <div className="col-xs-3"/>
                         <div className="col-xs-6">
-                            <h2> Team Leader Interest </h2>
+                            <h2 className="text-center"> Team Leader Interest </h2>
+
+                            <div className="row">
+                                <div className="col-xs-4 text-center">
+                                    <br/> <br/>
+                                    <strong> Responsibilities Include: </strong>
+
+                                </div>
+                                <div className="col-xs-8">
+                                    <ul>
+                                        <li> Attending 2 hour team leader training</li>
+                                        <li> Teaching the lessons to your team</li>
+                                        <li> Making sure your kit is picked up</li>
+                                        <li> Coordinating team travel to the school</li>
+                                        <li> Contacting your team and your teacher in the event of a cancellation</li>
+                                    </ul>
+                                </div>
+                            </div>
                             <table className="table table-bordered table-striped">
                                 <tbody>
                                     <tr>
-                                        <td><strong> Responsibilities Include: </strong></td>
-                                        <td><ul>
-                                            <li> Attending 2 hour team leader training </li>
-                                            <li> Teaching the lessons to your team </li>
-                                            <li> Making sure your kit is picked up</li>
-                                            <li> Coordinating team travel to the school</li>
-                                            <li> Contacting your team and your teacher in the event of a cancellation </li>
-                                        </ul></td>
-                                    </tr>
-                                    <tr>
-                                        <td> Have you been a member of VSVS before? </td>
-                                        <td>
-                                            <label htmlFor="no">No</label>
-                                            <input type="radio" name="previous_member" id="no" value="no" checked = "true"/><br/>
-                                            <label htmlFor="Yes">Yes</label>
-                                            <input type="radio" name="previous_member" id="yes" value= "yes" />
+                                        <td className = "col-xs-10"> Have you been a member of VSVS before? </td>
+                                        <td className = "text-center">
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="previous_member" value = "0" defaultChecked = "true"/>
+                                                No
+                                            </label>
+
+                                            <br/>
+
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="previous_member" value = "1"/>
+                                                Yes
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td> Are you interested in being a team leader? </td>
-                                        <td>
-                                            <label htmlFor="no">No</label>
-                                            <input type="radio" name="previous_member" id="no" value="no" checked = "true"/><br/>
-                                            <label htmlFor="Yes">Yes</label>
-                                            <input type="radio" name="previous_member" id="yes" value= "yes" />
+                                        <td className = "col-xs-10"> Are you interested in being a team leader? </td>
+                                        <td className = "text-center">
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="interest_leader" value = "0" defaultChecked = "true"/>
+                                                No
+                                            </label>
+
+                                            <br/>
+
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="interest_leader" value = "1"/>
+                                                Yes
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td> Have you been a team leader before? </td>
-                                        <td>
-                                            <label htmlFor="no">No</label>
-                                            <input type="radio" name="previous_leader" id="no" value="no" checked = "true"/><br/>
-                                            <label htmlFor="Yes">Yes</label>
-                                            <input type="radio" name="previous_leader" id="yes" value= "yes" />
+                                        <td className = "col-xs-10"> Have you been a team leader before? </td>
+                                        <td className = "text-center">
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="previous_leader" value = "0" defaultChecked = "true"/>
+                                                No
+                                            </label>
+
+                                            <br/>
+
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="previous_leader" value = "1"/>
+                                                Yes
+                                            </label>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -186,7 +218,7 @@ class Individual extends Component {
                                         </td>
                                         <td>
                                             <label htmlFor="no">No</label>
-                                            <input type="radio" name="car" id="no" value="no" checked = "true"/><br/>
+                                            <input type="radio" name="car" id="no" value="no" defaultChecked = "true"/><br/>
                                             <label htmlFor="Yes">Yes</label>
                                             <input type="radio" name="car" id="yes" value= "yes" />
                                         </td>
@@ -197,7 +229,7 @@ class Individual extends Component {
                                         </td>
                                         <td>
                                             <select  id="passengers" name="passengers">
-                                                <option value selected> N/A </option>
+                                                <option value defaultValue> N/A </option>
                                                 <option value = "1"> 1 </option>
                                                 <option value = "2"> 2 </option>
                                                 <option value = "3"> 3 </option>

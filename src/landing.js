@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { render }   from 'react-dom';
 import { Link, withRouter} from 'react-router-dom';
 
 class Landing extends Component {
     render () {
-        return <div className ="row">
+        return <div className ="row text-center" >
             <div className="center-block"/>
             <div className="col-xs-4"/>
             <div className="col-xs-4">
