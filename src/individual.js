@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router';
+import Schedule from './schedule.js'
 
 class Individual extends Component {
 
@@ -45,7 +46,7 @@ class Individual extends Component {
                     </p>
 
                 </div>
-                <form id="individual_form" className="form-horizontal" method="post">
+                <form id="individual_form" className="form-horizontal" method="post" onSubmit={this.onSubmit}>
                     <div className="row">
                         <div className="col-xs-3"/>
                         <div className="col-xs-6">
@@ -141,7 +142,7 @@ class Individual extends Component {
                                     </ul>
                                 </div>
                             </div>
-                            <table className="table table-bordered table-striped">
+                            <table className="table table-bordered table-striped text-center">
                                 <tbody>
                                     <tr>
                                         <td className = "col-xs-10"> Have you been a member of VSVS before? </td>
@@ -197,7 +198,7 @@ class Individual extends Component {
                     </div>
                     <div className="row">
                         <div className="col-xs-3" />
-                        <div className="col-xs-6" >
+                        <div className="col-xs-6 text-center" >
                             <h2> Transportation </h2>
                             <table className="table table-bordered table-striped">
                                 <tbody>
@@ -217,10 +218,18 @@ class Individual extends Component {
                                             Vanderbilt by car, can be a team driver.
                                         </td>
                                         <td>
-                                            <label htmlFor="no">No</label>
-                                            <input type="radio" name="car" id="no" value="no" defaultChecked = "true"/><br/>
-                                            <label htmlFor="Yes">Yes</label>
-                                            <input type="radio" name="car" id="yes" value= "yes" />
+                                            <br/> <br/> <br/>
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="drive" value = "0" defaultChecked = "true"/>
+                                                No
+                                            </label>
+
+                                            <br/>
+
+                                            <label className = "radio-inline">
+                                                <input type= "radio" name="drive" value = "1"/>
+                                                Yes
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
@@ -242,6 +251,19 @@ class Individual extends Component {
                                     </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-xs-2"/>
+                        <div className="col-xs-8">
+                            <Schedule/>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div className="row">
+                        <h2 className="text-center"> All Finished? </h2> <br/>
+                        <div className="centerAlign">
+                            <input type="submit" value="Sign Up!"/>
                         </div>
                     </div>
                 </form>

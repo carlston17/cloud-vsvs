@@ -26,3 +26,7 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.centerAlign { margin: 0; text-align: center; float: none; width: 100%;}
+
+.container { margin: 35px; float: none;}
