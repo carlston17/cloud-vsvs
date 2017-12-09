@@ -30,3 +30,7 @@
 .centerAlign { margin: 0; text-align: center; float: none; width: 100%;}
 
 .container { margin: 35px; float: none;}
+
+.timeSlotOn{ background-color: #98FB98}
+
+.timeSlotOff{background-color: #FFFFFF}

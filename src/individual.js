@@ -4,8 +4,23 @@ import Schedule from './schedule.js'
 
 class Individual extends Component {
 
+    constructor(props){
+        super(props)
+        this.state({
+            ready: false
+        })
+    }
     onSubmit(ev){
         ev.preventDefault();
+
+        this.setState({
+            ready: true
+        })
+
+
+    }
+
+    retrieveInfo(data) {
 
     }
 
@@ -256,7 +271,7 @@ class Individual extends Component {
                     <div className="row">
                         <div className="col-xs-2"/>
                         <div className="col-xs-8">
-                            <Schedule/>
+                            <Schedule cb={this.retrieveInfo} submit={this.state.ready}/>
                         </div>
                     </div>
                     <hr/>
