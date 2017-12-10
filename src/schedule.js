@@ -8,31 +8,31 @@ class Schedule extends Component {
         super(props);
         this.state = {
             timeSlots: [],
-            timeDif: '15'
+            days: ['Mo', 'Tu', 'We', 'Th', 'Fr'],
+            hours: ['7', '8', '9', '10', '11', '12', '1', '2', '3', '4'],
+            times: [':00', ':15', ':30', ':45']
         }
-        let days = ['Mo', 'Tu', 'We', 'Th', 'Fr'];
-        let hours = ['7', '8', '9', '10', '11', '12', '1', '2', '3', '4'];
-        let times = [':00', ':15', ':30', ':45'];
 
-        days.forEach((day) => {
-            hours.forEach ((hour) => {
-                times.forEach ((time) => {
-
+        this.state.days.forEach((day) => {
+            this.state.hours.forEach ((hour) => {
+                this.state.times.forEach ((time) => {
                     this.state.timeSlots.push({
                         status: false,
                         id: `${day}: ${hour}${time}`,
+                        time: `${hour}${time}`,
                         day: day
                     })
                 })
             })
         })
 
-        console.log (this.state.timeSlots);
-
-
         this.onClick = this.onClick.bind(this);
         this.changeSlot = this.changeSlot.bind(this);
 
+    }
+
+    sendInfo(){
+        return this.state.timeSlots;
     }
 
     onClick(ev) {
@@ -40,7 +40,6 @@ class Schedule extends Component {
 
         this.setState({timeDif: ev.target.id});
     }
-
 
     changeSlot(id, day){
         let index;
@@ -50,10 +49,8 @@ class Schedule extends Component {
                 break;
             }
         }
-
         this.state.timeSlots[index].status = !(this.state.timeSlots[index].status);
     }
-
 
     createRows(arr){
         let rows = [];
@@ -77,32 +74,27 @@ class Schedule extends Component {
     }
 
     render() {
-        let times = [];
-        let timeArr = [];
-        let hours = ['7', '8', '9', '10', '11', '12', '1', '2', '3', '4'];
-
-        switch(this.state.timeDif) {
-            case '15':
-                times = [':00', ':15', ':30', ':45'];
-                break;
-            case '30':
-                times = [':00', ':30'];
-                break;
-            case '60':
-                times = [':00'];
-                break;
-            default:
-                console.log("default")
-        }
-
-        hours.forEach((hour)=>{
-            times.forEach((time)=>{
-                let tStr = `${hour}${time}`;
-                timeArr.push(tStr);
+        let schedule = [];
+        let row = [];
+        this.state.hours.forEach((hour) => {
+            this.state.times.forEach((time) => {
+                this.state.days.forEach((day) => {
+                    let index;
+                    for (let i = 0; i < this.state.timeSlots.length; i ++){
+                        if (this.state.timeSlots[i].time === `${hour}${time}` && this.state.timeSlots[i].day === day){
+                            index = this.state.timeSlots[i];
+                            break;
+                        }
+                    }
+                    let temp = <Timeslot cb={this.changeSlot} time={index.time} status={index.status} id={index.id} day={index.day} />
+                    row.push(temp);
+                })
+                schedule.push(<tr>{row}</tr>);
+                row = [];
             })
         })
 
-        let schedule = this.createRows(timeArr);
+        schedule = <tbody>{schedule}</tbody>;
 
         return <div className="row">
             <div className="col-xs-12 text-center">
@@ -114,26 +106,26 @@ class Schedule extends Component {
                 </p>
                 <table className= "centerAlign">
                     <tbody>
-                    <tr className="text-center">
-                        <td className="col-xs-4">
-                            <label>
-                                <input type="button" value="15 min" id="15" className = "difSelect"
-                                       onClick={this.onClick}/>
-                            </label>
-                        </td>
-                        <td className="col-xs-4">
-                            <label>
-                                <input type="button" value="30 min" id="30" className = "difSelect"
-                                       onClick={this.onClick}/>
-                            </label>
-                        </td>
-                        <td className="col-xs-4">
-                            <label>
-                                <input type="button" value="60 min" id="60" className = "difSelect"
-                                       onClick={this.onClick}/>
-                            </label>
-                        </td>
-                    </tr>
+                    {/*<tr className="text-center">*/}
+                        {/*<td className="col-xs-4">*/}
+                            {/*<label>*/}
+                                {/*<input type="button" value="15 min" id="15" className="difSelect"*/}
+                                       {/*onClick={this.onClick}/>*/}
+                            {/*</label>*/}
+                        {/*</td>*/}
+                        {/*<td className="col-xs-4">*/}
+                            {/*<label>*/}
+                                {/*<input type="button" value="30 min" id="30" className="difSelect"*/}
+                                       {/*onClick={this.onClick}/>*/}
+                            {/*</label>*/}
+                        {/*</td>*/}
+                        {/*<td className="col-xs-4">*/}
+                            {/*<label>*/}
+                                {/*<input type="button" value="60 min" id="60" className="difSelect"*/}
+                                       {/*onClick={this.onClick}/>*/}
+                            {/*</label>*/}
+                        {/*</td>*/}
+                    {/*</tr>*/}
                     </tbody>
                 </table>
                 <table id="grid" className="centerAlign table-bordered">

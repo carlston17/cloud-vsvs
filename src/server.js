@@ -22,11 +22,11 @@ app.listen(3000, function () {
 
 app.post("/individualApp",function (req, res) {
 	console.log("post received individual App")
-	var database = firebase.database();
+	let database = firebase.database();
 	database.ref('/Applicants').push(req.body);
 })
 
 app.post("/partnerApp",function (req, res) {
    console.log("post received partnerApp")
-   var database = firebase.database();
+   let database = firebase.database();
 })

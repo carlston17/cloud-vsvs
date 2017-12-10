@@ -7,7 +7,7 @@ class Timeslot extends Component {
         super(props);
         this.onClick = this.onClick.bind(this);
         this.state = {
-            status: false
+            status: this.props.status
         }
     }
 
@@ -15,7 +15,7 @@ class Timeslot extends Component {
         let color = this.state.status ? '#98FB98' : '#FFFFFF'
 
         return <td onClick={this.onClick} bgcolor={color}>
-            {this.props.value}
+            {this.props.time}
         </td>
     }
 
@@ -23,7 +23,7 @@ class Timeslot extends Component {
         this.setState({
             status: !(this.state.status)
         })
-        this.props.cb(this.props.id, this.props.week);
+        this.props.cb(this.props.id, this.props.day);
     }
 
 

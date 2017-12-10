@@ -1,27 +1,80 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router';
 import Schedule from './schedule.js'
+import * as $ from "jquery";
 
 class Individual extends Component {
 
     constructor(props){
         super(props)
-        this.state({
-            ready: false
-        })
+        this.state = {
+            robotics: false,
+            previous_member: false,
+            interest_leader: false,
+            previous_leader: false,
+            drive: false
+        }
     }
+
     onSubmit(ev){
         ev.preventDefault();
 
-        this.setState({
-            ready: true
+        // timeData - all time information retrieved from schedule
+        // all times are in 15 minute chunks
+        // represented as an array of objects with four fields
+        //      status - true = selected as free time
+        //      day - day of the week (Mo, Tu, We, Th, Fr)
+        //      time - time of day (ex. 7:45)
+        //      id - combination string of day and time
+        //          format: {day}: {time}
+
+        let timeData = this.refs.schedule.sendInfo();
+
+        let general = {
+            first_name: document.getElementById('first_name'),
+            last_name: document.getElementById('last_name'),
+            phone: document.getElementById('phone'),
+            email: document.getElementById('email'),
+            school: document.getElementById('school'),
+            year: document.getElementById('year'),
+            major: document.getElementById('major'),
+            preference: document.getElementById('preferences'),
+            robotics: this.state.robotics
+        }
+
+        let teamLeader = {
+            previous_member: this.state.previous_member,
+            interest_leader: this.state.interest_leader,
+            previous_leader: this.state.previous_leader
+        }
+
+        let transportation = {
+            drive: this.state.drive,
+            passengers: document.getElementById('passengers')
+        }
+
+        // Sending Data
+        // General - All General Information
+        // teamLeader - All leader information
+        // transportation - All transportation information
+        // times - all time information retrieved from schedule
+        let data = {
+            general: general,
+            teamLeader: teamLeader,
+            transportation: transportation,
+            times: timeData
+        }
+
+        $.ajax({
+            url: "/server",
+            method: 'post',
+            data: data
+        }).then(() => {
+            this.props.history.push('/')
+        }).fail((err) => {
+            let errorEl = document.getElementById('errorMsg');
+            errorEl.innerHTML = `Error: ${err.response}`;
         })
-
-
-    }
-
-    retrieveInfo(data) {
-
     }
 
     render () {
@@ -31,6 +84,7 @@ class Individual extends Component {
                 <div className="col-xs-2"/>
                 <div className="col-xs-8 text-center" >
                     <h1>VSVS Individual Applications</h1>
+
                     <p>
                         <strong>What do VSVS members do? </strong> Each member joins a team of 3-4 volunteers.  Each team will teach four constructor
                         <strong> different</strong> lessons in the
@@ -65,6 +119,7 @@ class Individual extends Component {
                     <div className="row">
                         <div className="col-xs-3"/>
                         <div className="col-xs-6">
+                            <h3 id='errorMsg'/>
                             <h2 className = "text-center">General Information</h2>
                             <table className="table table-bordered table-striped">
                                 <tbody>
@@ -121,12 +176,12 @@ class Individual extends Component {
                                     </td>
                                     <td>
                                         <label className = "radio-inline">
-                                            <input type= "radio" name="robotics" value = "0" defaultChecked = "true"/>
+                                            <input type= "radio" name="robotics" value = "0" defaultChecked = "true" onClick={() => {this.setState({robotics: false})}}/>
                                             No
                                         </label>
 
                                         <label className = "radio-inline">
-                                            <input type= "radio" name="robotics" value = "1"/>
+                                            <input type= "radio" name="robotics" value = "1" onClick={() => {this.setState({robotics: true})}}/>
                                             Yes
                                         </label>
                                     </td>
@@ -163,14 +218,14 @@ class Individual extends Component {
                                         <td className = "col-xs-10"> Have you been a member of VSVS before? </td>
                                         <td className = "text-center">
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="previous_member" value = "0" defaultChecked = "true"/>
+                                                <input type= "radio" name="previous_member" value = "0" defaultChecked = "true" onClick={() => {this.setState({previous_member: false})}}/>
                                                 No
                                             </label>
 
                                             <br/>
 
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="previous_member" value = "1"/>
+                                                <input type= "radio" name="previous_member" value = "1" onClick={() => {this.setState({previous_member: true})}}/>
                                                 Yes
                                             </label>
                                         </td>
@@ -179,14 +234,14 @@ class Individual extends Component {
                                         <td className = "col-xs-10"> Are you interested in being a team leader? </td>
                                         <td className = "text-center">
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="interest_leader" value = "0" defaultChecked = "true"/>
+                                                <input type= "radio" name="interest_leader" value = "0" defaultChecked = "true" onClick={() => {this.setState({interest_leader: false})}}/>
                                                 No
                                             </label>
 
                                             <br/>
 
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="interest_leader" value = "1"/>
+                                                <input type= "radio" name="interest_leader" value = "1" onClick={() => {this.setState({interest_leader: true})}}/>
                                                 Yes
                                             </label>
                                         </td>
@@ -195,14 +250,14 @@ class Individual extends Component {
                                         <td className = "col-xs-10"> Have you been a team leader before? </td>
                                         <td className = "text-center">
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="previous_leader" value = "0" defaultChecked = "true"/>
+                                                <input type= "radio" name="previous_leader" value = "0" defaultChecked = "true" onClick={() => {this.setState({previous_leader: false})}}/>
                                                 No
                                             </label>
 
                                             <br/>
 
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="previous_leader" value = "1"/>
+                                                <input type= "radio" name="previous_leader" value = "1" onClick={() => {this.setState({previous_leader: true})}}/>
                                                 Yes
                                             </label>
                                         </td>
@@ -235,14 +290,14 @@ class Individual extends Component {
                                         <td>
                                             <br/> <br/> <br/>
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="drive" value = "0" defaultChecked = "true"/>
+                                                <input type= "radio" name="drive" value = "0" defaultChecked = "true" onClick={() => {this.setState({drive: false})}}/>
                                                 No
                                             </label>
 
                                             <br/>
 
                                             <label className = "radio-inline">
-                                                <input type= "radio" name="drive" value = "1"/>
+                                                <input type= "radio" name="drive" value = "1" onClick={() => {this.setState({drive: true})}}/>
                                                 Yes
                                             </label>
                                         </td>
@@ -253,7 +308,7 @@ class Individual extends Component {
                                         </td>
                                         <td>
                                             <select  id="passengers" name="passengers">
-                                                <option value defaultValue> N/A </option>
+                                                <option value defaultValue> 0 </option>
                                                 <option value = "1"> 1 </option>
                                                 <option value = "2"> 2 </option>
                                                 <option value = "3"> 3 </option>
@@ -271,7 +326,7 @@ class Individual extends Component {
                     <div className="row">
                         <div className="col-xs-2"/>
                         <div className="col-xs-8">
-                            <Schedule cb={this.retrieveInfo} submit={this.state.ready}/>
+                            <Schedule ref="schedule"/>
                         </div>
                     </div>
                     <hr/>

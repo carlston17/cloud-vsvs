@@ -1,8 +1,68 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router';
 import Schedule from './schedule.js'
+import * as $ from "jquery";
+
 
 class Partner extends Component {
+
+    constructor(props){
+        super(props);
+    }
+
+    onSubmit(ev){
+        ev.preventDefault();
+
+        // timeData - all time information retrieved from schedule
+        // all times are in 15 minute chunks
+        // represented as an array of objects with four fields
+        //      status - true = selected as free time
+        //      day - day of the week (Mo, Tu, We, Th, Fr)
+        //      time - time of day (ex. 7:45)
+        //      id - combination string of day and time
+        //          format: {day}: {time}
+        let timeData = this.refs.schedule.sendInfo();
+
+        let partners = [];
+
+        for (let i = 1; i < 5; i ++){
+            let tStrF = `first_name_${i}`;
+            let tStrL = `last_name_${i}`;
+            let first = document.getElementById(tStrF);
+            let last = document.getElementById(tStrL);
+
+            if (first.length > 2 && last.length > 2){
+                let temp = {
+                    first: first,
+                    last: last
+                }
+                partners.push(temp);
+            }
+        }
+
+        // Submit Data
+        //      partners - array of objects with two fields, first and last
+        //      preferences - string
+        //      times - array of time data (described above)
+        let data = {
+            partners: partners,
+            preferences: document.getElementById('preferences'),
+            times: timeData
+        }
+
+        $.ajax({
+            url: "/v1/game",
+            method: "post",
+            data: data
+        }).then(() => {
+            this.props.history.push(`/`);
+        }).fail(err => {
+            let errorEl = document.getElementById('errorMsg');
+            errorEl.innerHTML = `Error: ${err.response}`;
+        });
+
+    }
+
     render(){
         return <div className="container">
             <div className="row">
@@ -24,7 +84,8 @@ class Partner extends Component {
                 <div className ="col-xs-2"/>
             </div>
             <hr/>
-            <form id="partner_form" className="form-horizontal" method="post">
+            <h3 className="text-center" id='errorMsg'/>
+            <form id="partner_form" className="form-horizontal" method="post" onSubmit={this.onSubmit}>
                 <div className="col-xs-2"/>
                 <div className = "col-xs-8">
                     <div className = "row text-center"> <h2> Applicants </h2> </div>
@@ -85,7 +146,7 @@ class Partner extends Component {
                     </table>
                     <hr/>
                     <div className = "centerAlign">
-                        <Schedule/>
+                        <Schedule ref="schedule"/>
                     </div>
                     <hr/>
                     <h2 className="text-center"> All Finished? </h2> <br/>
