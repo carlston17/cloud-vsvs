@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link, withRouter} from 'react-router';
+import {withRouter} from 'react-router';
 import Timeslot from './timeSlot.js';
 import * as $ from "jquery/src/ajax";
 
@@ -56,8 +56,6 @@ class Schedule extends Component {
             console.log ('Posted Partner App');
         }
 
-
-
     }
 
     changeSlot(id, day){
@@ -74,6 +72,7 @@ class Schedule extends Component {
     render() {
         let schedule = [];
         let row = [];
+        let key = 0;
         this.state.hours.forEach((hour) => {
             this.state.times.forEach((time) => {
                 this.state.days.forEach((day) => {
@@ -84,10 +83,12 @@ class Schedule extends Component {
                             break;
                         }
                     }
-                    let temp = <Timeslot cb={this.changeSlot} time={index.time} status={index.status} id={index.id} day={index.day} />
+                    let temp = <Timeslot cb={this.changeSlot} time={index.time} status={index.status} id={index.id} day={index.day} key={key} />
                     row.push(temp);
+                    key ++;
                 })
-                schedule.push(<tr>{row}</tr>);
+                schedule.push(<tr key = {key}>{row}</tr>);
+                key++
                 row = [];
             })
         })

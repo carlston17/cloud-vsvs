@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import {Link, withRouter} from 'react-router';
+import {withRouter} from 'react-router';
 import Schedule from './schedule.js'
-import * as $ from "jquery";
 
 
 class Partner extends Component {
@@ -77,7 +76,7 @@ class Partner extends Component {
                 <div className ="col-xs-2"/>
             </div>
             <hr/>
-            <h3 className="text-center" id='errorMsg'/>
+            <div className="text-center" id='errorMsg'/>
             <form id="partner_form" className="form-horizontal" method="post">
                 <div className="col-xs-2"/>
                 <div className = "col-xs-8">

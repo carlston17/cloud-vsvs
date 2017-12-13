@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link, withRouter} from 'react-router';
+import {withRouter} from 'react-router';
 
 class Timeslot extends Component {
 

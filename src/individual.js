@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Link, withRouter} from 'react-router';
+import {withRouter} from 'react-router';
 import Schedule from './schedule.js'
 
 class Individual extends Component {
@@ -111,7 +111,7 @@ class Individual extends Component {
                     <div className="row">
                         <div className="col-xs-3"/>
                         <div className="col-xs-6">
-                            <h3 id='errorMsg'/>
+                            <div id='errorMsg'/>
                             <h2 className = "text-center">General Information</h2>
                             <table className="table table-bordered table-striped">
                                 <tbody>
