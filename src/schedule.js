@@ -49,26 +49,58 @@ class Schedule extends Component {
     onSubmit(ev) {
         ev.preventDefault();
         let data = this.props.cb();
+        let validForm = true;
         data['timeData'] = this.state.timeSlots;
         if(this.state.form === "individual"){
             db.collection('applicants').doc(data.general.email).set(data)
             console.log ('Posted Individual App');
         } else {
-            //db.collection('partners').doc(data.partners[0].email).set(data);
             var ref = db.collection('applicants').doc(data.partners[0].email);
             ref.get().then(function(doc) {
             if (doc.exists) {
                 console.log("Document data:", doc.data());
                 db.collection('applicants').doc(data.partners[0].email).collection('partners').doc(data.partners[0].email).set(data);
             } else {
-                alert("Must Create an Individual Application before you submit a Partner application");
+                alert("Error: One or more group members have not submitted an individual application.")
+            }
+            }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+            /*
+        let size = data.partners.length;
+        for(var i = 0; i<size; i++)
+        {
+            var ref = db.collection('applicants').doc(data.partners[i].email);
+            ref.get().then(function(doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+            } else {
+                console.log("enters");
+                validForm = false;
             }
             }).catch(function(error) {
             console.log("Error getting document:", error);
             });
-            console.log ('Posted Partner App');
+            console.log("callback "+callback);
+            if(!validForm)
+            {
+                console.log("val of valid" + validForm)
+                break;
+            }
         }
+        console.log("out loop" + validForm)
+           if(validForm)
+           {
+            console.log(true);
+            //db.collection('applicants').doc(data.partners[0].email).collection('partners').doc(data.partners[0].email).set(data);
+           }
+           else
+           {
+            alert("Error: One or more group members have not submitted an individual application.")
+           }*/
+         console.log ('Posted Partner App');
     }
+ }
 
     changeSlot(id, day){
         let index;
