@@ -8,11 +8,10 @@ class Partner extends Component {
 
     constructor(props){
         super(props);
+        this.sendInfo = this.sendInfo.bind(this);
     }
 
-    onSubmit(ev){
-        ev.preventDefault();
-
+    sendInfo(){
         // timeData - all time information retrieved from schedule
         // all times are in 15 minute chunks
         // represented as an array of objects with four fields
@@ -21,20 +20,24 @@ class Partner extends Component {
         //      time - time of day (ex. 7:45)
         //      id - combination string of day and time
         //          format: {day}: {time}
-        let timeData = this.refs.schedule.sendInfo();
+
+        console.log ('Bundling Form Data');
 
         let partners = [];
 
         for (let i = 1; i < 5; i ++){
             let tStrF = `first_name_${i}`;
             let tStrL = `last_name_${i}`;
-            let first = document.getElementById(tStrF);
-            let last = document.getElementById(tStrL);
+            let tStrE = `email_${i}`;
+            let first = document.getElementById(tStrF).value;
+            let last = document.getElementById(tStrL).value;
+            let email = document.getElementById(tStrE).value;
 
             if (first.length > 2 && last.length > 2){
                 let temp = {
                     first: first,
-                    last: last
+                    last: last,
+                    email: email
                 }
                 partners.push(temp);
             }
@@ -46,21 +49,11 @@ class Partner extends Component {
         //      times - array of time data (described above)
         let data = {
             partners: partners,
-            preferences: document.getElementById('preferences'),
-            times: timeData
+            preferences: document.getElementById('preferences').value,
         }
 
-        $.ajax({
-            url: "/v1/game",
-            method: "post",
-            data: data
-        }).then(() => {
-            this.props.history.push(`/`);
-        }).fail(err => {
-            let errorEl = document.getElementById('errorMsg');
-            errorEl.innerHTML = `Error: ${err.response}`;
-        });
-
+        console.log (data);
+        return data;
     }
 
     render(){
@@ -85,7 +78,7 @@ class Partner extends Component {
             </div>
             <hr/>
             <h3 className="text-center" id='errorMsg'/>
-            <form id="partner_form" className="form-horizontal" method="post" onSubmit={this.onSubmit}>
+            <form id="partner_form" className="form-horizontal" method="post">
                 <div className="col-xs-2"/>
                 <div className = "col-xs-8">
                     <div className = "row text-center"> <h2> Applicants </h2> </div>
@@ -95,16 +88,20 @@ class Partner extends Component {
                                 <th/>
                                 <th> First Name </th>
                                 <th> Last Name </th>
+                                <th> Email </th>
                             </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td className = "col-xs-2"> You</td>
-                            <td className = "col-xs-5">
+                            <td className = "col-xs-3">
                                 <input type="text" id="first_name_1"/>
                             </td>
-                            <td className = "col-xs-5">
+                            <td className = "col-xs-3">
                                 <input type="text" id="last_name_1"/>
+                            </td>
+                            <td className = "col-xs-4">
+                                <input type = "email" id="email_1"/>
                             </td>
                         </tr>
                         <tr>
@@ -115,6 +112,9 @@ class Partner extends Component {
                             <td >
                                 <input type="text" id="last_name_2"/>
                             </td>
+                            <td className = "col-xs-4">
+                                <input type = "email" id="email_2"/>
+                            </td>
                         </tr>
                         <tr>
                             <td className = "col-xs-2"> Partner 2</td>
@@ -124,6 +124,9 @@ class Partner extends Component {
                             <td>
                                 <input  type="text" id="last_name_3"/>
                             </td>
+                            <td className = "col-xs-4">
+                                <input type = "email" id="email_3"/>
+                            </td>
                         </tr>
                         <tr>
                             <td className = "col-xs-2"> Partner 3</td>
@@ -132,6 +135,9 @@ class Partner extends Component {
                             </td>
                             <td>
                                 <input type="text" id="last_name_4"/>
+                            </td>
+                            <td className = "col-xs-4">
+                                <input type = "email" id="email_4"/>
                             </td>
                         </tr>
                         </tbody>
@@ -146,12 +152,7 @@ class Partner extends Component {
                     </table>
                     <hr/>
                     <div className = "centerAlign">
-                        <Schedule ref="schedule"/>
-                    </div>
-                    <hr/>
-                    <h2 className="text-center"> All Finished? </h2> <br/>
-                    <div className="centerAlign">
-                        <input type = "submit" value= "Sign Up!" className= "col-xs-offset-4 col-xs-4" />
+                        <Schedule cb={this.sendInfo} form= 'partner'/>
                     </div>
                 </div>
             </form>

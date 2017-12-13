@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router';
 import Timeslot from './timeSlot.js';
+import * as $ from "jquery/src/ajax";
 
 class Schedule extends Component {
 
@@ -10,7 +11,8 @@ class Schedule extends Component {
             timeSlots: [],
             days: ['Mo', 'Tu', 'We', 'Th', 'Fr'],
             hours: ['7', '8', '9', '10', '11', '12', '1', '2', '3', '4'],
-            times: [':00', ':15', ':30', ':45']
+            times: [':00', ':15', ':30', ':45'],
+            form: this.props.form
         }
 
         this.state.days.forEach((day) => {
@@ -26,19 +28,36 @@ class Schedule extends Component {
             })
         })
 
-        this.onClick = this.onClick.bind(this);
         this.changeSlot = this.changeSlot.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 
     }
 
-    sendInfo(){
-        return this.state.timeSlots;
-    }
-
-    onClick(ev) {
+    onSubmit(ev) {
         ev.preventDefault();
+        let data = this.props.cb();
+        data['timeData'] = this.state.timeSlots;
 
-        this.setState({timeDif: ev.target.id});
+        if(this.state.form === "individual"){
+            $.ajax({
+                url: '/individualApp',
+                method: 'POST',
+                data: data
+            })
+
+            console.log ('Posted Individual App');
+        } else {
+            $.ajax({
+                url: '/partnerApp',
+                method: 'POST',
+                data: data
+            })
+
+            console.log ('Posted Partner App');
+        }
+
+
+
     }
 
     changeSlot(id, day){
@@ -50,27 +69,6 @@ class Schedule extends Component {
             }
         }
         this.state.timeSlots[index].status = !(this.state.timeSlots[index].status);
-    }
-
-    createRows(arr){
-        let rows = [];
-        let row = [];
-        let days = ['Mo', 'Tu', 'We', 'Th', 'Fr']
-        let key = 0;
-
-        for (let i = 0; i < arr.length; i++){
-            for (let j = 0; j < 5; j++){
-                let str = `${days[j]}: ${arr[i]}`;
-                row.push(<Timeslot cb={this.changeSlot} week={days[j]} status={false} value={`${arr[i]}`} id ={str} key={key}/>)
-                key ++;
-            }
-            rows.push(<tr key={key}>{row}</tr>);
-            row = [];
-            key++;
-        }
-
-
-        return <tbody>{rows}</tbody>
     }
 
     render() {
@@ -104,30 +102,6 @@ class Schedule extends Component {
                     <strong> Note: </strong> Let this reflect your <strong> class/work start and end times. </strong>
                     We will account for the travel time ourselves.
                 </p>
-                <table className= "centerAlign">
-                    <tbody>
-                    {/*<tr className="text-center">*/}
-                        {/*<td className="col-xs-4">*/}
-                            {/*<label>*/}
-                                {/*<input type="button" value="15 min" id="15" className="difSelect"*/}
-                                       {/*onClick={this.onClick}/>*/}
-                            {/*</label>*/}
-                        {/*</td>*/}
-                        {/*<td className="col-xs-4">*/}
-                            {/*<label>*/}
-                                {/*<input type="button" value="30 min" id="30" className="difSelect"*/}
-                                       {/*onClick={this.onClick}/>*/}
-                            {/*</label>*/}
-                        {/*</td>*/}
-                        {/*<td className="col-xs-4">*/}
-                            {/*<label>*/}
-                                {/*<input type="button" value="60 min" id="60" className="difSelect"*/}
-                                       {/*onClick={this.onClick}/>*/}
-                            {/*</label>*/}
-                        {/*</td>*/}
-                    {/*</tr>*/}
-                    </tbody>
-                </table>
                 <table id="grid" className="centerAlign table-bordered">
                     <thead className = "text-center" id="tableHeader">
                     <tr className="centerAlign">
@@ -140,6 +114,15 @@ class Schedule extends Component {
                     </thead>
                     {schedule}
                 </table>
+            </div>
+
+            <div className="row">
+                <p> <br/> </p>
+                <hr/> <hr/>
+                <h2 className="text-center"> All Finished? </h2> <br/>
+                <div className="centerAlign">
+                    <input type="submit" value="Sign Up!" onClick={this.onSubmit}/>
+                </div>
             </div>
         </div>
     }

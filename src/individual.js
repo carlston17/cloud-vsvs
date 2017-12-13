@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router';
 import Schedule from './schedule.js'
-import * as $ from "jquery";
 
 class Individual extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
+            ready: false,
             robotics: false,
             previous_member: false,
             interest_leader: false,
             previous_leader: false,
-            drive: false
+            drive: false,
+            timeData:[]
         }
+        this.sendInfo = this.sendInfo.bind(this);
     }
 
-    onSubmit(ev){
-        ev.preventDefault();
-
+    sendInfo(){
         // timeData - all time information retrieved from schedule
         // all times are in 15 minute chunks
         // represented as an array of objects with four fields
@@ -28,57 +28,49 @@ class Individual extends Component {
         //      id - combination string of day and time
         //          format: {day}: {time}
 
-        let timeData = this.refs.schedule.sendInfo();
+        console.log ('Bundling Form Data');
 
+        console.log ('Bundling General Info');
         let general = {
-            first_name: document.getElementById('first_name'),
-            last_name: document.getElementById('last_name'),
-            phone: document.getElementById('phone'),
-            email: document.getElementById('email'),
-            school: document.getElementById('school'),
-            year: document.getElementById('year'),
-            major: document.getElementById('major'),
-            preference: document.getElementById('preferences'),
+            first_name: document.getElementById('first_name').value,
+            last_name: document.getElementById('last_name').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            school: document.getElementById('school').value,
+            year: document.getElementById('year').value,
+            major: document.getElementById('major').value,
+            preference: document.getElementById('preferences').value,
             robotics: this.state.robotics
         }
 
+        console.log ('Bundling Leader Info');
         let teamLeader = {
             previous_member: this.state.previous_member,
             interest_leader: this.state.interest_leader,
             previous_leader: this.state.previous_leader
         }
 
+        console.log ('Bundling Transportation Info');
         let transportation = {
             drive: this.state.drive,
-            passengers: document.getElementById('passengers')
+            passengers: document.getElementById('passengers').value
         }
 
         // Sending Data
         // General - All General Information
         // teamLeader - All leader information
         // transportation - All transportation information
-        // times - all time information retrieved from schedule
         let data = {
             general: general,
             teamLeader: teamLeader,
             transportation: transportation,
-            times: timeData
         }
 
-        $.ajax({
-            url: "/server",
-            method: 'post',
-            data: data
-        }).then(() => {
-            this.props.history.push('/')
-        }).fail((err) => {
-            let errorEl = document.getElementById('errorMsg');
-            errorEl.innerHTML = `Error: ${err.response}`;
-        })
+        console.log (data);
+        return data;
     }
 
     render () {
-
         return <div className="container" >
             <div className="row">
                 <div className="col-xs-2"/>
@@ -115,7 +107,7 @@ class Individual extends Component {
                     </p>
 
                 </div>
-                <form id="individual_form" className="form-horizontal" method="post" onSubmit={this.onSubmit}>
+                <form id="individual_form" className="form-horizontal" method="post">
                     <div className="row">
                         <div className="col-xs-3"/>
                         <div className="col-xs-6">
@@ -326,16 +318,10 @@ class Individual extends Component {
                     <div className="row">
                         <div className="col-xs-2"/>
                         <div className="col-xs-8">
-                            <Schedule ref="schedule"/>
+                            <Schedule cb={this.sendInfo} form='individual'/>
                         </div>
                     </div>
                     <hr/>
-                    <div className="row">
-                        <h2 className="text-center"> All Finished? </h2> <br/>
-                        <div className="centerAlign">
-                            <input type="submit" value="Sign Up!"/>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
