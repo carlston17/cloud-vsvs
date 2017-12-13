@@ -48,7 +48,6 @@ class Partner extends Component {
         //      times - array of time data (described above)
         let data = {
             partners: partners,
-            preferences: document.getElementById('preferences').value,
         }
 
         console.log (data);

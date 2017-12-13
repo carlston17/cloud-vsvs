@@ -3,6 +3,19 @@ import {withRouter} from 'react-router';
 import Timeslot from './timeSlot.js';
 import * as $ from "jquery/src/ajax";
 
+const firebase = require("firebase");
+// Required for side-effects
+require("firebase/firestore");
+
+firebase.initializeApp({
+  apiKey: "AIzaSyAMcqmIvLgrC4gfVO6p06buBYSgD680eB0",
+  authDomain: "finalcloudcomp.firebaseapp.com",
+  projectId: "finalcloudcomp"
+});
+
+// Initialize Cloud Firestore through Firebase
+var db = firebase.firestore();
+
 class Schedule extends Component {
 
     constructor(props){
@@ -37,25 +50,24 @@ class Schedule extends Component {
         ev.preventDefault();
         let data = this.props.cb();
         data['timeData'] = this.state.timeSlots;
-
         if(this.state.form === "individual"){
-            $.ajax({
-                url: '/individualApp',
-                method: 'POST',
-                data: data
-            })
-
+            db.collection('applicants').doc(data.general.email).set(data)
             console.log ('Posted Individual App');
         } else {
-            $.ajax({
-                url: '/partnerApp',
-                method: 'POST',
-                data: data
-            })
-
+            //db.collection('partners').doc(data.partners[0].email).set(data);
+            var ref = db.collection('applicants').doc(data.partners[0].email);
+            ref.get().then(function(doc) {
+            if (doc.exists) {
+                console.log("Document data:", doc.data());
+                db.collection('applicants').doc(data.partners[0].email).collection('partners').doc(data.partners[0].email).set(data);
+            } else {
+                alert("Must Create an Individual Application before you submit a Partner application");
+            }
+            }).catch(function(error) {
+            console.log("Error getting document:", error);
+            });
             console.log ('Posted Partner App');
         }
-
     }
 
     changeSlot(id, day){
